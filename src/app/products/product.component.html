@@ -1,0 +1,259 @@
+<app-header></app-header>
+<body class="container">
+<div class="row">
+  <div class="col-md-12" style="background-color: yellow">
+    <h1>Калькулятор калорій - це наше все =)</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2" style="background-color: #34ce57">
+    <h2>Menu</h2>
+    <div class="dropdown-menu">
+      <h6 class="dropdown-header">Меню</h6>
+      <a class="dropdown-item" href="#">Гриби</a>
+      <a class="dropdown-item" href="#">Крупи і каші</a>
+    </div>
+  </div>
+  <div class="col-md-8" style="background-color: #abdde5">
+
+
+
+
+    <p-dataView #dv [value]="products" [paginator]="true" [rows]="20" paginatorPosition="both">
+<!--                filterBy="brand"-->
+<!--                [sortField]="sortField" -->
+<!--    [sortOrder]="sortOrder"-->
+    >
+      <p-header>
+        <div class="ui-helper-clearfix">
+          <div class="ui-g">
+            <div class="ui-g-12 ui-md-4">
+<!--              <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>-->
+            </div>
+            <div class="ui-g-6 ui-md-4 filter-container">
+              <div style="position:relative">
+                <input type="search" pInputText placeholder="Search by brand" (keyup)="dv.filter($event.target.value)">
+              </div>
+            </div>
+            <div class="ui-g-6 ui-md-4" style="text-align:right">
+              <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+            </div>
+          </div>
+        </div>
+      </p-header>
+      <ng-template let-product pTemplate="listItem">
+        <div class="ui-g-12">
+          <div class="car-details">
+            <div>
+<!--              <img src="assets/showcase/images/demo/car/{{car.brand}}.png">-->
+              <img src="{{product.image}}">
+              <div class="ui-g">
+                <div class="ui-g-12">Name: <b>{{product.name}}</b></div>
+                <div class="ui-g-12">Type: <b>{{product.type}}</b></div>
+              </div>
+            </div>
+            <button pButton type="button" icon="pi pi-search" (click)="selectProduct($event, product)"></button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template let-product pTemplate="gridItem">
+        <div style="padding:.5em" class="ui-g-12 ui-md-3">
+          <p-panel [header]="product.id" [style]="{'text-align':'center'}">
+            <img src="assets/showcase/images/demo/car/{{product.name}}.png" width="60">
+            <div class="car-detail">{{product.type}} - {{product.id}}</div>
+            <hr class="ui-widget-content" style="border-top:0">
+            <button pButton type="button" icon="pi pi-search" (click)="selectProduct($event, product)" style="margin-top:0"></button>
+          </p-panel>
+        </div>
+      </ng-template>
+    </p-dataView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <div *ngFor="let product of products">-->
+<!--      <div class="row">-->
+<!--        <mat-card class="example-card">-->
+<!--          <mat-card-header>-->
+<!--            &lt;!&ndash;          <div mat-card-avatar class="example-header-image"></div>&ndash;&gt;-->
+<!--            <mat-card-title>{{product.name}}</mat-card-title>-->
+<!--            &lt;!&ndash;          <mat-card-subtitle>Dog Breed</mat-card-subtitle>&ndash;&gt;-->
+<!--          </mat-card-header>-->
+<!--          <img mat-card-image src= "{{product.image}}"-->
+<!--               alt="img">-->
+<!--          <mat-card-content>-->
+<!--            <p>-->
+<!--              Ще не придумав)-->
+<!--            </p>-->
+<!--          </mat-card-content>-->
+<!--          <mat-card-actions>-->
+<!--            <button mat-button>Add menu</button>-->
+<!--            <button mat-button>SHARE(хз)</button>-->
+<!--          </mat-card-actions>-->
+<!--        </mat-card>-->
+<!--      </div>-->
+
+<!--    </div>-->
+
+
+
+
+
+
+
+    <div class="row">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <!--          <div mat-card-avatar class="example-header-image"></div>-->
+          <mat-card-title>Shiba Inu</mat-card-title>
+          <!--          <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+        </mat-card-header>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+      <mat-card class="example-card">
+        <mat-card-header>
+          <!--          <div mat-card-avatar class="example-header-image"></div>-->
+          <mat-card-title>Shiba Inu</mat-card-title>
+          <!--          <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+        </mat-card-header>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+      <mat-card class="example-card">
+        <mat-card-header>
+          <!--          <div mat-card-avatar class="example-header-image"></div>-->
+          <mat-card-title>Shiba Inu</mat-card-title>
+          <!--          <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+        </mat-card-header>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+
+  </div>
+  <div class="col-md-2" style="background-color: #34ce57">
+    <h2>My menu</h2>
+  </div>
+</div>
+
+
+<app-footer></app-footer>
+</body>
+

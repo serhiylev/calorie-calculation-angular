@@ -1,0 +1,171 @@
+
+<!--<head>-->
+<!--  <meta charset="utf-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">-->
+<!--  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">-->
+<!--  <link rel="stylesheet" href="../../assets/css/Contact-Form-Clean.css">-->
+<!--  <link rel="stylesheet" href="../../assets/css/Footer-Basic.css">-->
+<!--  <link rel="stylesheet" href="../../assets/css/Header-Dark.css">-->
+<!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.min.css">-->
+<!--  <link rel="stylesheet" href="../../assets/css/Simple-Slider.css">-->
+<!--  <link rel="stylesheet" href="../../assets/css/styles.css">-->
+<!--  <script src="../../assets/js/jquery.min.js"></script>-->
+<!--  <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>-->
+<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>-->
+<!--  <script src="../../assets/js/Simple-Slider.js"></script>-->
+<!--</head>-->
+  <app-header></app-header>
+<body>
+<div class = "bg">
+  <div>
+    <div class="container">
+      <div class="row">
+        <div style="width: 370px"></div>
+        <h1 style="position: center">Title about calories</h1>
+        <div>
+          RandomText is a tool designers and developers can use to quickly grab dummy text in either Lorem Ipsum or Gibberish format.
+
+          There are a number of features that make RandomText a little different from other Lorem Ipsum dummy text generators you may find around the web....
+
+          Grab HTML or just plain text - even save generated text as files:
+          Don't waste time copying text and then more time marking it up in HTML manually, just hit View HTML Code and then Copy to Clipboard!
+
+          Use the address bar to create a query:
+
+          RandomText is a tool designers and developers can use to quickly grab dummy text in either Lorem Ipsum or Gibberish format.
+
+          There are a number of features that make RandomText a little different from other Lorem Ipsum dummy text generators you may find around the web....
+
+          Grab HTML or just plain text - even save generated text as files:
+          Don't waste time copying text and then more time marking it up in HTML manually, just hit View HTML Code and then Copy to Clipboard!
+
+          Use the address bar to create a query:
+          RandomText is a tool designers and developers can use to quickly grab dummy text in either Lorem Ipsum or Gibberish format.
+
+          There are a number of features that make RandomText a little different from other Lorem Ipsum dummy text generators you may find around the web....
+
+          Grab HTML or just plain text - even save generated text as files:
+          Don't waste time copying text and then more time marking it up in HTML manually, just hit View HTML Code and then Copy to Clipboard!
+
+          Use the address bar to create a query:
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="simple-slider">
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" style="background-image: url(../../assets/img/1456390262182626241.jpg);"></div>
+      <div class="swiper-slide" style="background-image:url(https://cdn.bootstrapstudio.io/placeholders/1400x800.png);"></div>
+      <div class="swiper-slide" style="background-image:url(https://cdn.bootstrapstudio.io/placeholders/1400x800.png);"></div>
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+</div>
+<div class="contact-clean">
+  <form method="post">
+    <h2 class="text-center">Contact us</h2>
+    <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name"></div>
+    <div class="form-group"><input class="form-control is-invalid" type="email" name="email" placeholder="Email"><small class="form-text text-danger">Please enter a correct email address.</small></div>
+    <div class="form-group"><textarea class="form-control" name="message" placeholder="Message" rows="14"></textarea></div>
+    <div class="form-group"><button class="btn btn-primary" type="submit">send </button></div>
+  </form>
+</div>
+<app-footer></app-footer>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+<!--        <div class="col-md-8 offset-md-2">-->
+<!--          <h1 class="text-center" style="color: rgb(0,0,0);font-size: 57px;">Create Your Own Dish</h1>-->
+<!--          <div>-->
+<!--            <ul class="nav nav-pills nav-fill">-->
+<!--              <li class="nav-item"><a class="nav-link active d-lg-flex" role="tab" data-toggle="tab" href="#tab-1" style="font-size: 20px;color: #055ada;"><br><strong style="padding-left: 30%">Salad</strong><br></a></li>-->
+<!--              <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-2" style="color: #055ada;font-size: 20px;"><strong>First Dish</strong></a></li>-->
+<!--              <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-3" style="color: #055ada;font-size: 20px;"><strong>Second Dish</strong><br></a></li>-->
+<!--              <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-4" style="color: #055ada;font-size: 20px;"><strong>Dessert</strong></a></li>-->
+<!--            </ul>-->
+<!--            <div class="tab-content" >-->
+<!--              <div class="tab-pane active" role="tabpanel" id="tab-1">-->
+<!--                <div>-->
+<!--                  <div class="dropdown,dish-menu">-->
+<!--                    <form [formGroup]="stateForm">-->
+<!--                      <mat-form-field>-->
+<!--                        <input type="text" matInput placeholder="Select Salad" formControlName="stateGroup" required [matAutocomplete]="autoGroup">-->
+<!--                        <mat-autocomplete #autoGroup="matAutocomplete">-->
+<!--                          <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">-->
+<!--                            <mat-option *ngFor="let name of group.names" [value]="name">-->
+<!--                              {{name}}-->
+<!--                            </mat-option>-->
+<!--                          </mat-optgroup>-->
+<!--                        </mat-autocomplete>-->
+<!--                      </mat-form-field>-->
+<!--                    </form>-->
+<!--                    <div class="dropdown-menu">-->
+<!--                      <a class="dropdown-item" href="#">Action</a>-->
+<!--                      <a class="dropdown-item" href="#">Another action</a>-->
+<!--                      <a class="dropdown-item" href="#">Something else here</a>-->
+<!--                      <div class="dropdown-divider"></div>-->
+<!--                      <a class="dropdown-item" href="#">Separated link</a>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="tab-pane" role="tabpanel" id="tab-2" >-->
+<!--                <form [formGroup]="stateForm">-->
+<!--                  <mat-form-field>-->
+<!--                    <input type="text" matInput placeholder="Select First Dish" formControlName="stateGroup" required [matAutocomplete]="autoGroup">-->
+<!--                    <mat-autocomplete #autoGroup="matAutocomplete">-->
+<!--                      <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">-->
+<!--                        <mat-option *ngFor="let name of group.names" [value]="name">-->
+<!--                          {{name}}-->
+<!--                        </mat-option>-->
+<!--                      </mat-optgroup>-->
+<!--                    </mat-autocomplete>-->
+<!--                  </mat-form-field>-->
+<!--                </form>-->
+<!--              </div>-->
+<!--              <div class="tab-pane" role="tabpanel" id="tab-3">-->
+<!--                <form [formGroup]="stateForm">-->
+<!--                  <mat-form-field>-->
+<!--                    <input type="text" matInput placeholder="Select Second Dish" formControlName="stateGroup" required [matAutocomplete]="autoGroup">-->
+<!--                    <mat-autocomplete #autoGroup="matAutocomplete">-->
+<!--                      <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">-->
+<!--                        <mat-option *ngFor="let name of group.names" [value]="name">-->
+<!--                          {{name}}-->
+<!--                        </mat-option>-->
+<!--                      </mat-optgroup>-->
+<!--                    </mat-autocomplete>-->
+<!--                  </mat-form-field>-->
+<!--                </form>-->
+<!--              </div>-->
+
+<!--              <div class="tab-pane" role="tabpanel" id="tab-4">-->
+<!--                <form [formGroup]="stateForm">-->
+<!--                  <mat-form-field>-->
+<!--                    <input type="text" matInput placeholder="Select Dessert" formControlName="stateGroup" required [matAutocomplete]="autoGroup">-->
+<!--                    <mat-autocomplete #autoGroup="matAutocomplete">-->
+<!--                      <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">-->
+<!--                        <mat-option *ngFor="let name of group.names" [value]="name">-->
+<!--                          {{name}}-->
+<!--                        </mat-option>-->
+<!--                      </mat-optgroup>-->
+<!--                    </mat-autocomplete>-->
+<!--                  </mat-form-field>-->
+<!--                </form>-->
+<!--              </div>-->
+
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
