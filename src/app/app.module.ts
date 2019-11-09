@@ -20,7 +20,7 @@ import { HeaderComponent } from './header/header.component';
 import { ProductComponent } from './products/product.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
-import {ButtonsModule, DropdownModule, IconsModule, NavbarModule, WavesModule} from 'angular-bootstrap-md';
+import {ButtonsModule, IconsModule, NavbarModule, WavesModule} from 'angular-bootstrap-md';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -29,6 +29,7 @@ import {PanelModule} from 'primeng/panel';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import {CheckboxModule} from 'primeng/checkbox';
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import {CheckboxModule} from 'primeng/checkbox';
     PanelModule,
     InputTextModule,
     ButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    DropdownModule
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]
