@@ -28,6 +28,7 @@ import {DataViewModule} from 'primeng/dataview';
 import {PanelModule} from 'primeng/panel';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
+import {CheckboxModule} from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {ButtonModule} from 'primeng/button';
     DataViewModule,
     PanelModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    CheckboxModule
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]

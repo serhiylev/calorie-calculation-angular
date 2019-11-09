@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {DishType} from '../models/dish-type';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {Product, ProductService} from '../services/product.service';
 import {ProductType} from '../models/product-type';
@@ -12,11 +11,14 @@ import {ProductType} from '../models/product-type';
 export class ProductComponent implements OnInit {
   products: Product[];
 
-  constructor(private formBuilder: FormBuilder, private dishService: ProductService) {}
+  constructor(private formBuilder: FormBuilder, private productService: ProductService) {
+  }
 
   ngOnInit() {
-    // this.dishService.loadDishes(DishType.SALAD);
-    console.log(this.dishService.loadProducts(ProductType.SALAD));
+    this.productService.loadProducts(ProductType.SALAD).subscribe(data => {
+      this.products = data;
+      console.log(data);
+    });
   }
 
   selectProduct($event: MouseEvent, product) {

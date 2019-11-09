@@ -1,6 +1,5 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {DishType} from '../models/dish-type';
 import {Injectable} from '@angular/core';
 import {ProductType} from '../models/product-type';
 
@@ -23,9 +22,9 @@ export class ProductService {
     console.log('lol');
   }
 
-  loadProducts(type: ProductType): Observable<Product> {
+  loadProducts(type: ProductType): Observable<Product[]> {
     // todo add enum with type of dishes and make get by type
-      return this.httpClient.get<Product>('http://localhost:8080/' + 'progucts/' + type, {headers});
+      return this.httpClient.get<Product[]>('http://localhost:8080/' + 'products?type=' + type.toString(), {headers});
     // return new Observable<Product>();
   }
 }
