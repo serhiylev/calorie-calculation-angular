@@ -18,13 +18,9 @@ const headers = new HttpHeaders(
 @Injectable()
 export class ProductService {
 
-  constructor(private httpClient: HttpClient) {
-    console.log('lol');
-  }
+  constructor(private httpClient: HttpClient) {}
 
   loadProducts(type: ProductType): Observable<Product[]> {
-    // todo add enum with type of dishes and make get by type
-      return this.httpClient.get<Product[]>('http://localhost:8080/' + 'products?type=' + type.toString(), {headers});
-    // return new Observable<Product>();
+    return this.httpClient.get<Product[]>('http://localhost:8080/' + 'products?type=' + type.toUpperCase(), {headers});
   }
 }

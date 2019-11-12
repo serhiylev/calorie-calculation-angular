@@ -30,6 +30,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {DropdownModule} from 'primeng/dropdown';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import {DropdownModule} from 'primeng/dropdown';
     HomePageComponent,
     HeaderComponent,
     ProductComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

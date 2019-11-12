@@ -1,5 +1,4 @@
 export enum ProductType {
-  SALAD= 'SALAD', FIRST_DISH = 'FIRST_DISH', SECOND_DISH = 'SECOND_DISH', DESSERT = 'DESSERT'
-
+  SALAD = 'Salad', FIRST_DISH = 'First Dish', SECOND_DISH = 'Second dish', DESSERT = 'Dessert'
 
 }
