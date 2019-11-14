@@ -27,6 +27,7 @@
     "animate.css": "^3.7.2",
     "chart.js": "^2.5.0",
     "hammerjs": "^2.0.8",
+    "material-design-icons": "^3.0.1",
     "mdbootstrap": "^4.8.11",
     "ngx-bootstrap": "latest",
     "primeicons": "^2.0.0",

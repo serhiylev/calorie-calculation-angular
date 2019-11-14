@@ -12,7 +12,9 @@ import {
   MatCardModule,
   MatFormFieldModule,
   MatInputModule,
-  MatRippleModule
+  MatRippleModule,
+  MatSidenavModule,
+  MatToolbarModule,
 } from '@angular/material';
 import {ProductService} from './services/product.service';
 import {HttpClientModule} from '@angular/common/http';
@@ -31,6 +33,9 @@ import {ButtonModule} from 'primeng/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {DropdownModule} from 'primeng/dropdown';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import {MatListModule} from '@angular/material/list';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -67,7 +72,12 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     InputTextModule,
     ButtonModule,
     CheckboxModule,
-    DropdownModule
+    DropdownModule,
+    MatListModule,
+    MatChipsModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatToolbarModule
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]

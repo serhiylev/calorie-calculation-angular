@@ -8,9 +8,10 @@
 <div class="row" style="margin: 0; opacity: 100%">
   <div class="col-md-2">
     <div style="height: 90px; background-color: #34ce57"></div>
-    <div *ngFor="let productType of productTypes">
-      <button mat-button (click)="getProductsByType(productType)">{{productType}}</button>
-    </div>
+    <mat-action-list *ngFor="let productType of productTypes">
+          <button mat-list-item (click)="getProductsByType(productType)">{{productType}}</button>
+<!--        <button mat-button (click)="getProductsByType(productType)">{{productType}}</button>-->
+    </mat-action-list>
   </div>
   <div class="col-md-8" style="background-color: #abdde5">
     <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" paginatorPosition="bottom" filterBy="name"
@@ -44,7 +45,9 @@
             <mat-card-header>
               <mat-card-title>{{product.name}}</mat-card-title>
             </mat-card-header>
-            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+            <!--            <img mat-card-image [src]="'src/assets/img/kcal.png'" alt="Photo of a Shiba Inu">-->
+            <!--            <img mat-card-image [src]="product.image" alt="Photo of a Shiba Inu">-->
+            <img mat-card-image src="assets/img/{{product?.image}}" onError="this.src = 'assets/img/not-found.jpg'"
                  alt="Photo of a Shiba Inu">
             <mat-card-content>
               <p>
@@ -54,6 +57,7 @@
             <mat-card-actions>
               <button mat-button>LIKE</button>
               <button mat-button>SHARE</button>
+              <button mat-button (click)="addProductToSet(product)">Add to Set</button>
             </mat-card-actions>
           </mat-card>
         </div>
@@ -64,8 +68,9 @@
             <mat-card-header>
               <mat-card-title>{{product.name}}</mat-card-title>
             </mat-card-header>
-            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+            <img mat-card-image src="assets/img/{{product?.image}}" onError="this.src = 'assets/img/not-found.jpg'"
                  alt="Photo of a Shiba Inu">
+
             <mat-card-content>
               <p>
                 The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
@@ -74,6 +79,7 @@
             <mat-card-actions>
               <button mat-button>LIKE</button>
               <button mat-button>SHARE</button>
+              <button mat-button (click)="addProductToSet(product)">Add to Set</button>
             </mat-card-actions>
           </mat-card>
         </div>
@@ -82,6 +88,26 @@
   </div>
   <div class="col-md-2" style="background-color: #34ce57">
     <h2>My menu</h2>
+    <mat-list>
+      <mat-list-item> Pepper</mat-list-item>
+      <mat-list-item> Salt</mat-list-item>
+      <mat-list-item> Paprika</mat-list-item>
+    </mat-list>
+    <mat-form-field class="example-chip-list" style="width: 100%">
+      <mat-chip-list #chipList aria-label="Fruit selection">
+        <mat-chip *ngFor="let product of productsSet" [selectable]="selectable"
+                  [removable]="removable" (removed)="remove(product)">
+          {{product.name}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+<!--        <input placeholder="New fruit..."-->
+<!--               [matChipInputFor]="chipList"-->
+<!--               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"-->
+<!--               [matChipInputAddOnBlur]="addOnBlur"-->
+<!--               (matChipInputTokenEnd)="add($event)">-->
+      </mat-chip-list>
+    </mat-form-field>
+
   </div>
 </div>
 <app-footer></app-footer>
