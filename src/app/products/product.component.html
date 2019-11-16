@@ -1,29 +1,26 @@
 <app-header></app-header>
 <body>
-<!--<div class="row">-->
-<!--  <div class="col-md-12" style="background-color: palevioletred">-->
-<!--    <h1>Калькулятор калорій - це наше все =)</h1>-->
-<!--  </div>-->
-<!--</div>-->
 <div class="row" style="margin: 0; opacity: 100%">
   <div class="col-md-2">
     <div style="height: 90px; background-color: #34ce57"></div>
     <mat-action-list *ngFor="let productType of productTypes">
           <button mat-list-item (click)="getProductsByType(productType)">{{productType}}</button>
-<!--        <button mat-button (click)="getProductsByType(productType)">{{productType}}</button>-->
     </mat-action-list>
   </div>
   <div class="col-md-8" style="background-color: #abdde5">
     <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" paginatorPosition="bottom" filterBy="name"
-                [sortField]="sortField" [sortOrder]="sortOrder">
+                [sortField]="sortField" [sortOrder]="sortOrder" currentPageReportTemplate="gridItem" layout="grid" [alwaysShowPaginator]="false">
       <p-header>
-        <div class="ui-helper-clearfix">
+        <div class="ui-helper-clearfix" style="max-height: 50px">
           <div class="ui-g">
             <div class="ui-g-12 ui-md-4">
               <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By"
                           (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
             </div>
             <div class="ui-g-6 ui-md-4 filter-container">
+
+            </div>
+            <div class="ui-g-6 ui-md-4" style="text-align:right">
               <div style="position:relative">
                 <form class="form-inline">
                   <div class="md-form my-0">
@@ -33,35 +30,9 @@
                 </form>
               </div>
             </div>
-            <div class="ui-g-6 ui-md-4" style="text-align:right">
-              <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
-            </div>
           </div>
         </div>
       </p-header>
-      <ng-template let-product pTemplate="listItem">
-        <div class="ui-g-12">
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>{{product.name}}</mat-card-title>
-            </mat-card-header>
-            <!--            <img mat-card-image [src]="'src/assets/img/kcal.png'" alt="Photo of a Shiba Inu">-->
-            <!--            <img mat-card-image [src]="product.image" alt="Photo of a Shiba Inu">-->
-            <img mat-card-image src="assets/img/{{product?.image}}" onError="this.src = 'assets/img/not-found.jpg'"
-                 alt="Photo of a Shiba Inu">
-            <mat-card-content>
-              <p>
-                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-              </p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-button>LIKE</button>
-              <button mat-button>SHARE</button>
-              <button mat-button (click)="addProductToSet(product)">Add to Set</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-      </ng-template>
       <ng-template let-product pTemplate="gridItem">
         <div style="padding:.5em" class="ui-g-12 ui-md-4">
           <mat-card>
@@ -70,7 +41,6 @@
             </mat-card-header>
             <img mat-card-image src="assets/img/{{product?.image}}" onError="this.src = 'assets/img/not-found.jpg'"
                  alt="Photo of a Shiba Inu">
-
             <mat-card-content>
               <p>
                 The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
@@ -84,15 +54,31 @@
           </mat-card>
         </div>
       </ng-template>
+            <ng-template let-product pTemplate="listItem">
+              <div class="ui-g-12">
+                <mat-card>
+                  <mat-card-header>
+                    <mat-card-title>{{product.name}}</mat-card-title>
+                  </mat-card-header>
+                  <img mat-card-image src="assets/img/{{product?.image}}" onError="this.src = 'assets/img/not-found.jpg'"
+                       alt="Photo of a Shiba Inu">
+                  <mat-card-content>
+                    <p>
+                      The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+                    </p>
+                  </mat-card-content>
+                  <mat-card-actions>
+                    <button mat-button>LIKE</button>
+                    <button mat-button>SHARE</button>
+                    <button mat-button (click)="addProductToSet(product)">Add to Set</button>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+            </ng-template>
     </p-dataView>
   </div>
   <div class="col-md-2" style="background-color: #34ce57">
-    <h2>My menu</h2>
-    <mat-list>
-      <mat-list-item> Pepper</mat-list-item>
-      <mat-list-item> Salt</mat-list-item>
-      <mat-list-item> Paprika</mat-list-item>
-    </mat-list>
+    <h2>My Set</h2>
     <mat-form-field class="example-chip-list" style="width: 100%">
       <mat-chip-list #chipList aria-label="Fruit selection">
         <mat-chip *ngFor="let product of productsSet" [selectable]="selectable"
@@ -100,11 +86,6 @@
           {{product.name}}
           <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
         </mat-chip>
-<!--        <input placeholder="New fruit..."-->
-<!--               [matChipInputFor]="chipList"-->
-<!--               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"-->
-<!--               [matChipInputAddOnBlur]="addOnBlur"-->
-<!--               (matChipInputTokenEnd)="add($event)">-->
       </mat-chip-list>
     </mat-form-field>
 

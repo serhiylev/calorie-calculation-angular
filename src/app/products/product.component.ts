@@ -38,7 +38,6 @@ export class ProductComponent implements OnInit {
     this.productService.loadProducts(ProductType.SALAD).subscribe(data => {
       this.products = data;
       this.productsSet = this.products.slice();
-
       console.log(data);
     });
     this.productTypes = [

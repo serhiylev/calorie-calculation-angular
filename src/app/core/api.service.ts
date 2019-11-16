@@ -1,0 +1,78 @@
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {User} from '../login/user';
+import {Observable} from 'rxjs';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+
+
+@Injectable()
+export class ApiService {
+
+  private readonly baseURL;
+  role: string;
+
+  constructor(private http: HttpClient) {
+    this.baseURL = 'http://localhost:8080';
+  }
+
+  login(loginPayload) {
+    const headers = new HttpHeaders({
+      Authorization: 'Basic ' + btoa('junior-client:junior-secret'),
+      'Content-type': 'application/x-www-form-urlencoded',
+    });
+    return this.http.post(this.baseURL + '/oauth/token', loginPayload, {headers});
+  }
+
+  password_recovery(loginPayload) {
+    const headers = new HttpHeaders({
+      'Content-type': 'application/x-www-form-urlencoded'
+    });
+    return this.http.post(this.baseURL + '/recovery', loginPayload, {headers});
+  }
+
+  get(): Observable<User> {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.returnAccessToken()
+    });
+    console.log(headers);
+    return this.http.get<User>(this.baseURL + '/user', {headers})
+      .catch(err => Observable.throw(err));
+  }
+
+  logoutme() {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.returnAccessToken()
+    });
+    return this.http.get(this.baseURL + '/logmeout', {headers})
+      .catch(err => Observable.throw(err));
+  }
+
+  returnAccessToken() {
+    if (window.sessionStorage.getItem('token') != null) {
+      return JSON.parse(window.sessionStorage.getItem('token')).access_token;
+    }
+  }
+
+  returnRefreshToken() {
+    if (window.sessionStorage.getItem('token') != null) {
+      return JSON.parse(window.sessionStorage.getItem('token')).refresh_token;
+    }
+  }
+
+  public isAdmin(): boolean {
+    this.role = JSON.parse(window.sessionStorage.getItem('user')).roles;
+    return this.role.toString() === 'ADMIN';
+  }
+
+  public isCustomer(): boolean {
+    this.role = JSON.parse(window.sessionStorage.getItem('user')).roles;
+    return this.role.toString() === 'CUSTOMER';
+  }
+
+  public isProvider(): boolean {
+    this.role = JSON.parse(window.sessionStorage.getItem('user')).roles;
+    return this.role.toString() === 'PROVIDER';
+  }
+
+}

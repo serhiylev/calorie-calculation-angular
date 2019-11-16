@@ -36,6 +36,11 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import {MatListModule} from '@angular/material/list';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
+import { LoginComponent } from './login/login.component';
+import {LogoutComponent} from './logout/logout.component';
+import {ApiService} from "./core/api.service";
+import {DataGridModule} from "primeng/datagrid";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -44,6 +49,8 @@ import {MatIconModule} from '@angular/material/icon';
     HeaderComponent,
     ProductComponent,
     FooterComponent,
+    LoginComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -77,9 +84,12 @@ import {MatIconModule} from '@angular/material/icon';
     MatChipsModule,
     MatIconModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MDBBootstrapModule,
+    DataGridModule,
+    MatMenuModule
   ],
-  providers: [ProductService],
+  providers: [ProductService, ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
