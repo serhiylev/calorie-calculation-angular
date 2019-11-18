@@ -23,4 +23,8 @@ export class ProductService {
   loadProducts(type: ProductType): Observable<Product[]> {
     return this.httpClient.get<Product[]>('http://localhost:8080/' + 'products?type=' + type.toUpperCase(), {headers});
   }
+
+  removeProductFromSet(setId: number, productDetalId: number) {
+    return this.httpClient.delete('http://localhost:8080/customer/deleteProduct/' + setId + '/' + productDetalId, {headers});
+  }
 }

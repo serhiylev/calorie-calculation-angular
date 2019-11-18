@@ -38,9 +38,11 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import { LoginComponent } from './login/login.component';
 import {LogoutComponent} from './logout/logout.component';
-import {ApiService} from "./core/api.service";
-import {DataGridModule} from "primeng/datagrid";
-import {MatMenuModule} from "@angular/material/menu";
+import {ApiService} from './core/api.service';
+import {DataGridModule} from 'primeng/datagrid';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {UserService} from "./services/user.service";
 
 @NgModule({
   declarations: [
@@ -87,9 +89,13 @@ import {MatMenuModule} from "@angular/material/menu";
     MatToolbarModule,
     MDBBootstrapModule,
     DataGridModule,
-    MatMenuModule
+    MatMenuModule,
+    BsDropdownModule.forRoot(),
+    TooltipModule.forRoot(),
+    ModalModule.forRoot(),
+    MatExpansionModule
   ],
-  providers: [ProductService, ApiService],
+  providers: [ProductService, ApiService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

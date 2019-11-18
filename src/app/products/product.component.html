@@ -7,7 +7,7 @@
           <button mat-list-item (click)="getProductsByType(productType)">{{productType}}</button>
     </mat-action-list>
   </div>
-  <div class="col-md-8" style="background-color: #abdde5">
+  <div class="col-md-7" style="background-color: #abdde5">
     <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" paginatorPosition="bottom" filterBy="name"
                 [sortField]="sortField" [sortOrder]="sortOrder" currentPageReportTemplate="gridItem" layout="grid" [alwaysShowPaginator]="false">
       <p-header>
@@ -47,8 +47,7 @@
               </p>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-button>LIKE</button>
-              <button mat-button>SHARE</button>
+              <button mat-button>More</button>
               <button mat-button (click)="addProductToSet(product)">Add to Set</button>
             </mat-card-actions>
           </mat-card>
@@ -69,7 +68,6 @@
                   </mat-card-content>
                   <mat-card-actions>
                     <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
                     <button mat-button (click)="addProductToSet(product)">Add to Set</button>
                   </mat-card-actions>
                 </mat-card>
@@ -77,17 +75,50 @@
             </ng-template>
     </p-dataView>
   </div>
-  <div class="col-md-2" style="background-color: #34ce57">
-    <h2>My Set</h2>
-    <mat-form-field class="example-chip-list" style="width: 100%">
-      <mat-chip-list #chipList aria-label="Fruit selection">
-        <mat-chip *ngFor="let product of productsSet" [selectable]="selectable"
-                  [removable]="removable" (removed)="remove(product)">
-          {{product.name}}
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
-    </mat-form-field>
+  <div class="col-md-3" style="background-color: #34ce57">
+    <div *ngIf="isUser() && isCustomer()" >
+      <mat-card style="position: fixed; margin-top: 30px; width:23%">
+        <mat-card-header>
+          <mat-card-title>Product Sets</mat-card-title>
+        </mat-card-header>
+        <mat-card-content *ngFor="let set of userSets">
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{set.name}}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{set.description}}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-form-field class="example-chip-list" style="width: 100%">
+              <mat-chip-list #chipList aria-label="selection lol">
+                <mat-chip *ngFor="let productDetail of set.productsDetails" [selectable]="selectable"
+                          [removable]="removable" (removed)="remove(set.id,productDetail.id)">
+                  {{productDetail.product.name}}
+
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+            </mat-form-field>
+          </mat-expansion-panel>
+        </mat-card-content>
+        <mat-card-actions >
+          <button mat-button>Create New</button>
+        </mat-card-actions>
+      </mat-card>
+
+    </div>
+
+
+
+
+    <div *ngIf="!isUser()">
+      <h2>My Set</h2>
+      To create set you need firstly to LogIn
+    </div>
+
 
   </div>
 </div>

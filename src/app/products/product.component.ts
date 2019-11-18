@@ -5,6 +5,12 @@ import {ProductType} from '../models/product-type';
 import {SelectItem} from 'primeng/api';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
+import {Router} from "@angular/router";
+import {ApiService} from "../core/api.service";
+import {User} from "../models/user";
+import {UserService} from "../services/user.service";
+import {Sets} from "../models/sets";
+import {ProductDetails} from "../models/product-details";
 
 export const stringToEnumValue = <ET, T>(enumObj: ET, str: string): T =>
   (enumObj as any)[Object.keys(enumObj).filter(k => (enumObj as any)[k] === str)[0]];
@@ -24,21 +30,24 @@ export class ProductComponent implements OnInit {
   sortOrder: number;
   productTypes: string[];
 
-  productsSet: Product[];
+  productsSet: ProductDetails[];
   visible = true;
   selectable = true;
   removable = true;
-  addOnBlur = true;
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  private role: string;
+  private user: User;
+  private userId: number;
+  userSets: Sets[];
 
-  constructor(private formBuilder: FormBuilder, private productService: ProductService) {
+
+  constructor(private formBuilder: FormBuilder, private productService: ProductService, private router: Router,
+              private apiService: ApiService, private userService: UserService) {
   }
 
   ngOnInit() {
     this.productService.loadProducts(ProductType.SALAD).subscribe(data => {
       this.products = data;
-      this.productsSet = this.products.slice();
-      console.log(data);
+      // this.productsSet = this.products.slice();
     });
     this.productTypes = [
       ProductType.SALAD.toString(), ProductType.DESSERT.toString(),
@@ -50,6 +59,13 @@ export class ProductComponent implements OnInit {
       {label: 'Brand', value: 'brand'},
       {label: 'None', value: false}
     ];
+    if (this.isUser()) {
+      this.userService.getUserById(this.userId).subscribe(user => {
+        this.user = user;
+        this.userSets = this.user.userSets;
+      });
+    }
+
   }
 
   selectProduct($event: MouseEvent, product) {
@@ -94,12 +110,23 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  remove(product: Product): void {
-    const index = this.productsSet.indexOf(product);
+  remove(setId: number, productDetailId: number): void {
+    this.productService.removeProductFromSet(setId, productDetailId);
+    this.ngOnInit();
+    // const index = sets.productDetails.indexOf(product);
+    // if (index >= 0) {
+    //   sets.productDetails.splice(index, 1);
+    // }
+  }
 
-    if (index >= 0) {
-      this.productsSet.splice(index, 1);
-    }
+  public isCustomer(): boolean {
+    this.role = JSON.parse(window.sessionStorage.getItem('user')).roles;
+    return this.role.toString() === 'CUSTOMER';
+  }
+
+  public isUser() {
+    this.userId = JSON.parse(window.sessionStorage.getItem('user')).id;
+    return this.userId != null;
   }
 
   addProductToSet(product) {

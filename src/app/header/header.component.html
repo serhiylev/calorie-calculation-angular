@@ -1,8 +1,6 @@
 <header class="intro-header">
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #138496; height: 7%; min-height: 50px">
-    <div style="width: 2.5%">
-      <img src="../../assets/img/kcal.png" width="100%" height="100%" routerLink="" alt="ico"/>
-    </div>
+  <nav class="navbar navbar-expand-lg navbar-dark"
+       style="background-color: #138496; min-height: 50px; margin: 0; border-radius: 0">
     <div style="width: 1%"></div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-6"
             aria-controls="navbarSupportedContent-6" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,6 +9,11 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent-6">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
+          <div style="width: 50px; margin-right: 10px">
+            <img src="../../assets/img/kcal.png" width="100%" height="100%" routerLink="" alt="ico"/>
+          </div>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" routerLink="">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
@@ -18,33 +21,38 @@
         </li>
       </ul>
     </div>
-    <div class="login" *ngIf="isUser()==false"><a routerLink="/login"><span class="orange">Log</span>In</a></div>
+    <div class="login" *ngIf="isUser()==false">
+      <a routerLink="/login">
+        <span style="color: white; margin-right: 10px">LogIn</span>
+      </a>
+    </div>
     <div class="login" *ngIf="isUser()==true">
       <ul class="nav user_menu">
-        <a class="dropdown-toggle" data-toggle="dropdown" [mat-menu-trigger-for]="appMenu" style="color: #f5f528;width: 20%;">
+        <a class="dropdown-toggle" data-toggle="dropdown" [mat-menu-trigger-for]="appMenu"
+           style="color: #f5f528;width: 20%;">
           <img style="border-radius: 50%; height: 50px; width: 50px" src="assets/img/user.png"/>
         </a>
 
         <mat-menu #appMenu="matMenu">
-          <button mat-menu-item>Settings</button>
+          <button mat-menu-item>{{getName()}}</button>
           <button mat-menu-item routerLink="/logout"><i class="fas fa-sign-out-alt"></i>Log Out</button>
         </mat-menu>
 
-<!--        <li class="dropdown">-->
-<!--          <ul class="dropdown-menu" style="width: 12em; top:10px">-->
-<!--            <li style="margin: 10%"><a routerLink="/"><i-->
-<!--              class="fas fa-user"></i> {{getName()}}</a></li>-->
-<!--            <hr>-->
-<!--            <li style="margin: 10%" *ngIf="isCustomer() ">lol<a routerLink="/my-profile"><i-->
-<!--              class="fas fa-user"></i>My Profile</a></li>-->
-<!--            <li style="margin: 10%" *ngIf="isCustomer()">lol<a routerLink="/favourite"><i class="fas fa-heart"></i>Favorite</a>-->
-<!--            </li>-->
-<!--            <li style="margin: 10%" *ngIf="isCustomer() "><a routerLink="/feedback"><i-->
-<!--              class="fas fa-archive"></i>Feedbacks</a></li>-->
-<!--            <div class="dropdown-divider"></div>-->
-<!--            <li style="margin: 10%"><a routerLink="/logout"><i class="fas fa-sign-out-alt"></i>Log out</a></li>-->
-<!--          </ul>-->
-<!--        </li>-->
+        <!--        <li class="dropdown">-->
+        <!--          <ul class="dropdown-menu" style="width: 12em; top:10px">-->
+        <!--            <li style="margin: 10%"><a routerLink="/"><i-->
+        <!--              class="fas fa-user"></i> {{getName()}}</a></li>-->
+        <!--            <hr>-->
+        <!--            <li style="margin: 10%" *ngIf="isCustomer() ">lol<a routerLink="/my-profile"><i-->
+        <!--              class="fas fa-user"></i>My Profile</a></li>-->
+        <!--            <li style="margin: 10%" *ngIf="isCustomer()">lol<a routerLink="/favourite"><i class="fas fa-heart"></i>Favorite</a>-->
+        <!--            </li>-->
+        <!--            <li style="margin: 10%" *ngIf="isCustomer() "><a routerLink="/feedback"><i-->
+        <!--              class="fas fa-archive"></i>Feedbacks</a></li>-->
+        <!--            <div class="dropdown-divider"></div>-->
+        <!--            <li style="margin: 10%"><a routerLink="/logout"><i class="fas fa-sign-out-alt"></i>Log out</a></li>-->
+        <!--          </ul>-->
+        <!--        </li>-->
       </ul>
     </div>
   </nav>
