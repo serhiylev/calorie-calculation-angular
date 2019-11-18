@@ -38,6 +38,8 @@ export class ProductComponent implements OnInit {
   private user: User;
   private userId: number;
   userSets: Sets[];
+  grams: number;
+  appMenu2: any;
 
 
   constructor(private formBuilder: FormBuilder, private productService: ProductService, private router: Router,
@@ -47,6 +49,7 @@ export class ProductComponent implements OnInit {
   ngOnInit() {
     this.productService.loadProducts(ProductType.SALAD).subscribe(data => {
       this.products = data;
+      this.grams = 100;
       // this.productsSet = this.products.slice();
     });
     this.productTypes = [

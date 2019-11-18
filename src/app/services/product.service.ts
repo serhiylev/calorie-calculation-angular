@@ -8,6 +8,10 @@ export interface Product {
   name: string;
   type: string;
   image: string;
+  kcal: number;
+  fats: number;
+  proteins: number;
+  carbohydrates: number;
 }
 
 const headers = new HttpHeaders(

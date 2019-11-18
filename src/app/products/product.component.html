@@ -4,12 +4,13 @@
   <div class="col-md-2">
     <div style="height: 90px; background-color: #34ce57"></div>
     <mat-action-list *ngFor="let productType of productTypes">
-          <button mat-list-item (click)="getProductsByType(productType)">{{productType}}</button>
+      <button mat-list-item (click)="getProductsByType(productType)">{{productType}}</button>
     </mat-action-list>
   </div>
   <div class="col-md-7" style="background-color: #abdde5">
     <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" paginatorPosition="bottom" filterBy="name"
-                [sortField]="sortField" [sortOrder]="sortOrder" currentPageReportTemplate="gridItem" layout="grid" [alwaysShowPaginator]="false">
+                [sortField]="sortField" [sortOrder]="sortOrder" currentPageReportTemplate="gridItem" layout="grid"
+                [alwaysShowPaginator]="false">
       <p-header>
         <div class="ui-helper-clearfix" style="max-height: 50px">
           <div class="ui-g">
@@ -47,42 +48,42 @@
               </p>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-button>More</button>
-              <button mat-button (click)="addProductToSet(product)">Add to Set</button>
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="row" style="width: 75%; margin-left: 15%; margin-top: 15%">
+                    <p matTooltip="kcal" class="text-primary">&nbsp;{{product.kcal}}&nbsp;</p>
+                    <p matTooltip="carbohydrates" class="text-success">{{product.carbohydrates}}&nbsp;</p>
+                    <p matTooltip="proteins" class="text-danger">{{product.proteins}}&nbsp;</p>
+                    <p matTooltip="fats" class="text-warning">{{product.fats}}&nbsp;</p>
+                  </div>
+                </div>
+                <div class="col-md-4" style="padding: 0; margin: auto;">
+                  <button mat-button [matMenuTriggerFor]="appMenu2">
+                    Add to Set
+                  </button>
+                  <mat-menu #appMenu2="matMenu">
+                    <button mat-menu-item (click)="addProductToSet(product)" *ngFor="let set of userSets">{{set.name}}</button>
+                  </mat-menu>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field style="width: 40px">
+                    <input matInput type="number" placeholder="grams" value="100">
+                  </mat-form-field>
+                </div>
+              </div>
             </mat-card-actions>
           </mat-card>
         </div>
       </ng-template>
-            <ng-template let-product pTemplate="listItem">
-              <div class="ui-g-12">
-                <mat-card>
-                  <mat-card-header>
-                    <mat-card-title>{{product.name}}</mat-card-title>
-                  </mat-card-header>
-                  <img mat-card-image src="assets/img/{{product?.image}}" onError="this.src = 'assets/img/not-found.jpg'"
-                       alt="Photo of a Shiba Inu">
-                  <mat-card-content>
-                    <p>
-                      The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-                    </p>
-                  </mat-card-content>
-                  <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button (click)="addProductToSet(product)">Add to Set</button>
-                  </mat-card-actions>
-                </mat-card>
-              </div>
-            </ng-template>
     </p-dataView>
   </div>
   <div class="col-md-3" style="background-color: #34ce57">
-    <div *ngIf="isUser() && isCustomer()" >
+    <div *ngIf="isUser() && isCustomer()">
       <mat-card style="position: fixed; margin-top: 30px; width:23%">
         <mat-card-header>
           <mat-card-title>Product Sets</mat-card-title>
         </mat-card-header>
         <mat-card-content *ngFor="let set of userSets">
-
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -93,33 +94,25 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
             <mat-form-field class="example-chip-list" style="width: 100%">
-              <mat-chip-list #chipList aria-label="selection lol">
+              <mat-chip-list aria-label="selection lol">
                 <mat-chip *ngFor="let productDetail of set.productsDetails" [selectable]="selectable"
                           [removable]="removable" (removed)="remove(set.id,productDetail.id)">
-                  {{productDetail.product.name}}
-
+                  {{productDetail.product.name}}({{productDetail.grams}}g)
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
               </mat-chip-list>
             </mat-form-field>
           </mat-expansion-panel>
         </mat-card-content>
-        <mat-card-actions >
+        <mat-card-actions>
           <button mat-button>Create New</button>
         </mat-card-actions>
       </mat-card>
-
     </div>
-
-
-
-
     <div *ngIf="!isUser()">
       <h2>My Set</h2>
       To create set you need firstly to LogIn
     </div>
-
-
   </div>
 </div>
 <app-footer></app-footer>

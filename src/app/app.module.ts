@@ -43,6 +43,7 @@ import {DataGridModule} from 'primeng/datagrid';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {UserService} from "./services/user.service";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import {UserService} from "./services/user.service";
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule
   ],
   providers: [ProductService, ApiService, UserService],
   bootstrap: [AppComponent]
