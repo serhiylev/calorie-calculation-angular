@@ -50,26 +50,26 @@
             <mat-card-actions>
               <div class="row">
                 <div class="col-md-5">
-                  <div class="row" style="width: 75%; margin-left: 15%; margin-top: 15%">
+                  <div class="row" style="width: 75%; margin-left: 15%; margin-top: 15%; padding: 0">
                     <p matTooltip="kcal" class="text-primary">&nbsp;{{product.kcal}}&nbsp;</p>
                     <p matTooltip="carbohydrates" class="text-success">{{product.carbohydrates}}&nbsp;</p>
                     <p matTooltip="proteins" class="text-danger">{{product.proteins}}&nbsp;</p>
                     <p matTooltip="fats" class="text-warning">{{product.fats}}&nbsp;</p>
                   </div>
                 </div>
-                <div class="col-md-4" style="padding: 0; margin: auto;">
-                  <button mat-button [matMenuTriggerFor]="appMenu2">
-                    Add to Set
-                  </button>
-                  <mat-menu #appMenu2="matMenu">
-                    <button mat-menu-item (click)="addProductToSet(product)" *ngFor="let set of userSets">{{set.name}}</button>
-                  </mat-menu>
-                </div>
-                <div class="col-md-3">
-                  <mat-form-field style="width: 40px">
-                    <input matInput type="number" placeholder="grams" value="100">
-                  </mat-form-field>
-                </div>
+                  <div class="col-md-4" style="padding: 0; margin: auto;">
+                    <button mat-button [matMenuTriggerFor]="appMenu2">
+                      Add to Set
+                    </button>
+                    <mat-menu #appMenu2="matMenu">
+                      <button mat-menu-item (click)="addProductToSet(product.id, set.id)" *ngFor="let set of userSets">{{set.name}}</button>
+                    </mat-menu>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field style="width: 40px">
+                      <input (change)="getGrams($event,product.id)" matInput type="number" placeholder="grams" value="100">
+                    </mat-form-field>
+                  </div>
               </div>
             </mat-card-actions>
           </mat-card>
@@ -84,7 +84,7 @@
           <mat-card-title>Product Sets</mat-card-title>
         </mat-card-header>
         <mat-card-content *ngFor="let set of userSets">
-          <mat-expansion-panel>
+          <mat-expansion-panel [expanded]="step === set.id" (opened)="setStep(set.id)">
             <mat-expansion-panel-header>
               <mat-panel-title>
                 {{set.name}}
@@ -94,9 +94,9 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
             <mat-form-field class="example-chip-list" style="width: 100%">
-              <mat-chip-list aria-label="selection lol">
+              <mat-chip-list aria-label="selection lol" >
                 <mat-chip *ngFor="let productDetail of set.productsDetails" [selectable]="selectable"
-                          [removable]="removable" (removed)="remove(set.id,productDetail.id)">
+                          [removable]="removable" (removed)="remove(set.id,productDetail.id, set.productsDetails)">
                   {{productDetail.product.name}}({{productDetail.grams}}g)
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>

@@ -38,8 +38,9 @@ export class ProductComponent implements OnInit {
   private user: User;
   private userId: number;
   userSets: Sets[];
-  grams: number;
   appMenu2: any;
+  private grams: number[] = [];
+  step: number;
 
 
   constructor(private formBuilder: FormBuilder, private productService: ProductService, private router: Router,
@@ -49,8 +50,6 @@ export class ProductComponent implements OnInit {
   ngOnInit() {
     this.productService.loadProducts(ProductType.SALAD).subscribe(data => {
       this.products = data;
-      this.grams = 100;
-      // this.productsSet = this.products.slice();
     });
     this.productTypes = [
       ProductType.SALAD.toString(), ProductType.DESSERT.toString(),
@@ -68,7 +67,6 @@ export class ProductComponent implements OnInit {
         this.userSets = this.user.userSets;
       });
     }
-
   }
 
   selectProduct($event: MouseEvent, product) {
@@ -95,31 +93,18 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  add(event: MatChipInputEvent): void {// todo make   addProductToSet(product)  working like it
-
-    const input = event.input;
-    const value = event.value;
-
-    // Add our fruit
-    if ((value || '').trim()) {
-      // todo adding products to set of user
-      // this.productsSet.push({name: value.trim()});
-      console.log('Product added ' + value.trim());
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  remove(setId: number, productDetailId: number): void {
+  remove(setId: number, productDetailId: number, productDetails: ProductDetails[]): void {
     this.productService.removeProductFromSet(setId, productDetailId);
-    this.ngOnInit();
-    // const index = sets.productDetails.indexOf(product);
-    // if (index >= 0) {
-    //   sets.productDetails.splice(index, 1);
-    // }
+    console.log(productDetails);
+    productDetails.splice(1, 1);
+    console.log(productDetails);
+    // this.ngOnInit();
+    if (this.isUser()) {
+      this.userService.getUserById(this.userId).subscribe(user => {
+        this.user = user;
+        this.userSets = this.user.userSets;
+      });
+    }
   }
 
   public isCustomer(): boolean {
@@ -132,7 +117,18 @@ export class ProductComponent implements OnInit {
     return this.userId != null;
   }
 
-  addProductToSet(product) {
+  addProductToSet(productId: number, setId: number) {
+    if (this.grams[productId] == null) {
+      this.grams[productId] = 100;
+    }
+    this.productService.addProductToSet(productId, setId, this.grams[productId]);
+  }
 
+  getGrams($event: KeyboardEvent, productId: number) {
+    this.grams[productId] = Number((event.target as HTMLInputElement).value);
+  }
+
+  setStep(index: number) {
+    this.step = index;
   }
 }

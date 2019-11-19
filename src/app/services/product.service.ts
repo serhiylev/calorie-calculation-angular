@@ -31,4 +31,8 @@ export class ProductService {
   removeProductFromSet(setId: number, productDetalId: number) {
     return this.httpClient.delete('http://localhost:8080/customer/deleteProduct/' + setId + '/' + productDetalId, {headers});
   }
+
+  addProductToSet(productId: number, setId: number, grams: number) {
+
+  }
 }
