@@ -22,17 +22,20 @@ const headers = new HttpHeaders(
 @Injectable()
 export class ProductService {
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+  }
 
   loadProducts(type: ProductType): Observable<Product[]> {
     return this.httpClient.get<Product[]>('http://localhost:8080/' + 'products?type=' + type.toUpperCase(), {headers});
   }
 
-  removeProductFromSet(setId: number, productDetalId: number) {
-    return this.httpClient.delete('http://localhost:8080/customer/deleteProduct/' + setId + '/' + productDetalId, {headers});
+  removeProductFromSet(setId: number, productId: number) {
+    console.log('removeProductFromSet pressed');
+    return this.httpClient.delete('http://localhost:8080/products/deleteProduct/' + setId + '/' + productId, {headers});
   }
 
   addProductToSet(productId: number, setId: number, grams: number) {
-
+    return this.httpClient.put('http://localhost:8080/products/addToSet/' + setId + '/' + productId + '/' + grams, {headers});
   }
+
 }

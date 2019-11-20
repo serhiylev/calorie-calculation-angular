@@ -96,7 +96,7 @@
             <mat-form-field class="example-chip-list" style="width: 100%">
               <mat-chip-list aria-label="selection lol" >
                 <mat-chip *ngFor="let productDetail of set.productsDetails" [selectable]="selectable"
-                          [removable]="removable" (removed)="remove(set.id,productDetail.id, set.productsDetails)">
+                          [removable]="removable" (removed)="remove(set.id,productDetail.product.id)">
                   {{productDetail.product.name}}({{productDetail.grams}}g)
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>

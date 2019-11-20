@@ -3,14 +3,12 @@ import {FormBuilder} from '@angular/forms';
 import {Product, ProductService} from '../services/product.service';
 import {ProductType} from '../models/product-type';
 import {SelectItem} from 'primeng/api';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {Router} from "@angular/router";
-import {ApiService} from "../core/api.service";
-import {User} from "../models/user";
-import {UserService} from "../services/user.service";
-import {Sets} from "../models/sets";
-import {ProductDetails} from "../models/product-details";
+import {Router} from '@angular/router';
+import {ApiService} from '../core/api.service';
+import {User} from '../models/user';
+import {UserService} from '../services/user.service';
+import {Sets} from '../models/sets';
+import {ProductDetails} from '../models/product-details';
 
 export const stringToEnumValue = <ET, T>(enumObj: ET, str: string): T =>
   (enumObj as any)[Object.keys(enumObj).filter(k => (enumObj as any)[k] === str)[0]];
@@ -36,7 +34,7 @@ export class ProductComponent implements OnInit {
   removable = true;
   private role: string;
   private user: User;
-  private userId: number;
+  private userId: number = null;
   userSets: Sets[];
   appMenu2: any;
   private grams: number[] = [];
@@ -64,13 +62,9 @@ export class ProductComponent implements OnInit {
     if (this.isUser()) {
       this.userService.getUserById(this.userId).subscribe(user => {
         this.user = user;
-        this.userSets = this.user.userSets;
+        this.userSets = user.userSets;
       });
     }
-  }
-
-  selectProduct($event: MouseEvent, product) {
-    console.log('product selected');
   }
 
   onSortChange(event) {
@@ -93,35 +87,40 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  remove(setId: number, productDetailId: number, productDetails: ProductDetails[]): void {
-    this.productService.removeProductFromSet(setId, productDetailId);
-    console.log(productDetails);
-    productDetails.splice(1, 1);
-    console.log(productDetails);
-    // this.ngOnInit();
-    if (this.isUser()) {
+  remove(setId: number, producId: number): void {
+    this.productService.removeProductFromSet(setId, producId).subscribe(() => {
       this.userService.getUserById(this.userId).subscribe(user => {
         this.user = user;
         this.userSets = this.user.userSets;
       });
-    }
+    });
   }
 
   public isCustomer(): boolean {
-    this.role = JSON.parse(window.sessionStorage.getItem('user')).roles;
+    const role = JSON.parse(window.sessionStorage.getItem('user')).roles;
+    if (role == null) {
+      return;
+    }
+    this.role = role;
     return this.role.toString() === 'CUSTOMER';
   }
 
   public isUser() {
-    this.userId = JSON.parse(window.sessionStorage.getItem('user')).id;
-    return this.userId != null;
+    const user = JSON.parse(window.sessionStorage.getItem('user'));
+    if (user == null) { return; }
+    this.userId = user.id;
+    return this.userId;
   }
 
   addProductToSet(productId: number, setId: number) {
     if (this.grams[productId] == null) {
       this.grams[productId] = 100;
     }
-    this.productService.addProductToSet(productId, setId, this.grams[productId]);
+    this.productService.addProductToSet(productId, setId, this.grams[productId]).subscribe(() =>{
+      this.userService.getUserById(this.userId).subscribe(user => {
+        this.userSets = user.userSets;
+      });
+    });
   }
 
   getGrams($event: KeyboardEvent, productId: number) {

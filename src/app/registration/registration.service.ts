@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Customer} from './customer';
 import {Observable} from 'rxjs';
 import {Headers, Http, RequestOptions, Response} from '@angular/http';
-import {HttpClient} from '@angular/common/http';
 
 
 @Injectable()
