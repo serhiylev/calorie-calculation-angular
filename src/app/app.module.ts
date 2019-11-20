@@ -48,7 +48,10 @@ import {CaptchaComponent} from './captcha/captcha.component';
 import {RegistrationService} from './registration/registration.service';
 import {NotifierModule, NotifierOptions} from 'angular-notifier';
 import {NgxCaptchaModule} from 'ngx-captcha';
-import { HttpModule } from '@angular/http';
+import {HttpModule} from '@angular/http';
+import {MatTableModule} from '@angular/material/table';
+import {ProductSetCreatingDialogComponent} from "./products/ProductSetCreatingDialog";
+import {MatDialogModule} from "@angular/material/dialog";
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -101,8 +104,10 @@ const customNotifierOptions: NotifierOptions = {
     LoginComponent,
     LogoutComponent,
     RegistrationComponent,
-    CaptchaComponent
+    CaptchaComponent,
+    ProductSetCreatingDialogComponent
   ],
+  entryComponents: [ProductSetCreatingDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -147,6 +152,8 @@ const customNotifierOptions: NotifierOptions = {
     MatTooltipModule,
     NgxCaptchaModule,
     NotifierModule.withConfig(customNotifierOptions),
+    MatTableModule,
+    MatDialogModule,
   ],
   providers: [ProductService, ApiService, UserService, RegistrationService],
   bootstrap: [AppComponent]

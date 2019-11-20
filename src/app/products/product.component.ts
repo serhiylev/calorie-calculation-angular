@@ -9,6 +9,8 @@ import {User} from '../models/user';
 import {UserService} from '../services/user.service';
 import {Sets} from '../models/sets';
 import {ProductDetails} from '../models/product-details';
+import {MatDialog} from '@angular/material/dialog';
+import {ProductSetCreatingDialogComponent} from './ProductSetCreatingDialog';
 
 export const stringToEnumValue = <ET, T>(enumObj: ET, str: string): T =>
   (enumObj as any)[Object.keys(enumObj).filter(k => (enumObj as any)[k] === str)[0]];
@@ -20,6 +22,11 @@ export const stringToEnumValue = <ET, T>(enumObj: ET, str: string): T =>
 })
 
 export class ProductComponent implements OnInit {
+
+
+  constructor(private formBuilder: FormBuilder, private productService: ProductService, private router: Router,
+              private apiService: ApiService, private userService: UserService, private dialog: MatDialog) {
+  }
   products: Product[];
   sortOptions: SelectItem[];
 
@@ -28,7 +35,6 @@ export class ProductComponent implements OnInit {
   sortOrder: number;
   productTypes: string[];
 
-  productsSet: ProductDetails[];
   visible = true;
   selectable = true;
   removable = true;
@@ -36,14 +42,11 @@ export class ProductComponent implements OnInit {
   private user: User;
   private userId: number = null;
   userSets: Sets[];
-  appMenu2: any;
   private grams: number[] = [];
   step: number;
 
-
-  constructor(private formBuilder: FormBuilder, private productService: ProductService, private router: Router,
-              private apiService: ApiService, private userService: UserService) {
-  }
+  description: string;
+  name: string;
 
   ngOnInit() {
     this.productService.loadProducts(ProductType.SALAD).subscribe(data => {
@@ -87,8 +90,8 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  remove(setId: number, producId: number): void {
-    this.productService.removeProductFromSet(setId, producId).subscribe(() => {
+  remove(productSetId: number): void {
+    this.productService.removeProductFromSet(productSetId).subscribe(() => {
       this.userService.getUserById(this.userId).subscribe(user => {
         this.user = user;
         this.userSets = this.user.userSets;
@@ -116,7 +119,7 @@ export class ProductComponent implements OnInit {
     if (this.grams[productId] == null) {
       this.grams[productId] = 100;
     }
-    this.productService.addProductToSet(productId, setId, this.grams[productId]).subscribe(() =>{
+    this.productService.addProductToSet(productId, setId, this.grams[productId]).subscribe(() => {
       this.userService.getUserById(this.userId).subscribe(user => {
         this.userSets = user.userSets;
       });
@@ -129,5 +132,59 @@ export class ProductComponent implements OnInit {
 
   setStep(index: number) {
     this.step = index;
+  }
+
+  totalGrams(productsDetails: ProductDetails[]) {
+    let total = 0;
+    productsDetails.forEach(product => {
+      total += product.grams;
+    });
+    return total;
+  }
+
+  totalProteins(productsDetails: ProductDetails[]) {
+    let total = 0;
+    productsDetails.forEach(productDet => {
+      total += ((productDet.grams * productDet.product.proteins) / 100);
+    });
+    return total;
+  }
+
+  totalCarbohydrates(productsDetails: ProductDetails[]) {
+    let total = 0;
+    productsDetails.forEach(productDet => {
+      total += ((productDet.grams * productDet.product.carbohydrates) / 100);
+    });
+    return total;
+  }
+
+  totalFats(productsDetails: ProductDetails[]) {
+    let total = 0;
+    productsDetails.forEach(productDet => {
+      total += ((productDet.grams * productDet.product.fats) / 100);
+    });
+    return total;
+  }
+
+  totalKcal(productsDetails: ProductDetails[]) {
+    let total = 0;
+    productsDetails.forEach(productDet => {
+      total += ((productDet.grams * productDet.product.kcal) / 100);
+    });
+    return total;
+  }
+
+  openCreateSetDialog(): void {
+    const dialogRef = this.dialog.open(ProductSetCreatingDialogComponent, {
+      width: '40%',
+      data: {name: this.name, description: this.description}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.description = result.description;
+      this.name = result.name;
+      console.log(this.name);
+    });
   }
 }

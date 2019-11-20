@@ -29,9 +29,9 @@ export class ProductService {
     return this.httpClient.get<Product[]>('http://localhost:8080/' + 'products?type=' + type.toUpperCase(), {headers});
   }
 
-  removeProductFromSet(setId: number, productId: number) {
+  removeProductFromSet(productSetId: number) {
     console.log('removeProductFromSet pressed');
-    return this.httpClient.delete('http://localhost:8080/products/deleteProduct/' + setId + '/' + productId, {headers});
+    return this.httpClient.delete('http://localhost:8080/products/deleteProduct/' + productSetId , {headers});
   }
 
   addProductToSet(productId: number, setId: number, grams: number) {
