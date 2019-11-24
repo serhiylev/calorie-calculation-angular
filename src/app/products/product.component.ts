@@ -10,7 +10,12 @@ import {UserService} from '../services/user.service';
 import {Sets} from '../models/sets';
 import {ProductDetails} from '../models/product-details';
 import {MatDialog} from '@angular/material/dialog';
-import {ProductSetCreatingDialogComponent} from './ProductSetCreatingDialog';
+import {ProductSetCreatingDialogComponent} from './product-set-creating-dialog';
+import {SetsService} from '../services/sets-service';
+import {ProductCreatingDialogComponent} from './product-creating-dialog';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 export const stringToEnumValue = <ET, T>(enumObj: ET, str: string): T =>
   (enumObj as any)[Object.keys(enumObj).filter(k => (enumObj as any)[k] === str)[0]];
@@ -22,11 +27,20 @@ export const stringToEnumValue = <ET, T>(enumObj: ET, str: string): T =>
 })
 
 export class ProductComponent implements OnInit {
-
+  private productType: string;
+  private productDescription: string;
+  private productName: string;
+  private productKcal: number;
+  private productCarbohydrates: number;
+  private productProteins: number;
+  private productFats: number;
+  private productImage: File;
 
   constructor(private formBuilder: FormBuilder, private productService: ProductService, private router: Router,
-              private apiService: ApiService, private userService: UserService, private dialog: MatDialog) {
+              private apiService: ApiService, private userService: UserService, private dialog: MatDialog,
+              private setService: SetsService) {
   }
+
   products: Product[];
   sortOptions: SelectItem[];
 
@@ -45,13 +59,11 @@ export class ProductComponent implements OnInit {
   private grams: number[] = [];
   step: number;
 
-  description: string;
-  name: string;
+  setDescription: string;
+  setName: string;
 
   ngOnInit() {
-    this.productService.loadProducts(ProductType.SALAD).subscribe(data => {
-      this.products = data;
-    });
+    this.getProductsByType(ProductType.SALAD);
     this.productTypes = [
       ProductType.SALAD.toString(), ProductType.DESSERT.toString(),
       ProductType.FIRST_DISH.toString(), ProductType.SECOND_DISH.toString()
@@ -84,9 +96,8 @@ export class ProductComponent implements OnInit {
 
   getProductsByType(productType: string) {
     this.productService.loadProducts(stringToEnumValue(ProductType, productType)).subscribe(data => {
+      this.productType = productType;
       this.products = data;
-      console.log(data);
-      console.log(stringToEnumValue(ProductType, productType));
     });
   }
 
@@ -100,19 +111,34 @@ export class ProductComponent implements OnInit {
   }
 
   public isCustomer(): boolean {
-    const role = JSON.parse(window.sessionStorage.getItem('user')).roles;
-    if (role == null) {
-      return;
+    if (this.isUser() != null) {
+      const role = JSON.parse(window.sessionStorage.getItem('user')).roles;
+      if (role == null) {
+        return;
+      }
+      this.role = role;
+      return this.role.toString() === 'CUSTOMER';
     }
-    this.role = role;
-    return this.role.toString() === 'CUSTOMER';
   }
 
   public isUser() {
     const user = JSON.parse(window.sessionStorage.getItem('user'));
-    if (user == null) { return; }
+    if (user == null) {
+      return;
+    }
     this.userId = user.id;
     return this.userId;
+  }
+
+  public isAdmin() {
+    if (this.isUser() != null) {
+      const role = JSON.parse(window.sessionStorage.getItem('user')).roles;
+      if (role == null) {
+        return;
+      }
+      this.role = role;
+      return this.role.toString() === 'ADMIN';
+    }
   }
 
   addProductToSet(productId: number, setId: number) {
@@ -175,16 +201,109 @@ export class ProductComponent implements OnInit {
   }
 
   openCreateSetDialog(): void {
+    this.setName = null;
+    this.setDescription = null;
     const dialogRef = this.dialog.open(ProductSetCreatingDialogComponent, {
       width: '40%',
-      data: {name: this.name, description: this.description}
+      data: {name: this.setName, description: this.setDescription}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.description = result.description;
-      this.name = result.name;
-      console.log(this.name);
+      try {
+        this.setDescription = result.description;
+        this.setName = result.name;
+        if (this.setName != null) {
+          this.setService.addSet(this.setName, this.setDescription, this.user.id).subscribe(() => {
+            this.userService.getUserById(this.userId).subscribe(user => {
+              this.user = user;
+              this.userSets = this.user.userSets;
+            });
+          });
+        }
+      } catch (e) {
+      }
     });
+  }
+
+  openCreateProductDialog(productType: string) {
+    this.productDescription = null;
+    this.productName = null;
+    this.productImage = null;
+    this.productKcal = null;
+    this.productCarbohydrates = null;
+    this.productProteins = null;
+    this.productFats = null;
+    const dialogRef = this.dialog.open(ProductCreatingDialogComponent, {
+      data: {
+        productName: this.productName, productDescription: this.productDescription, productImage: this.productImage,
+        productKcal: this.productKcal, productCarbohydrates: this.productCarbohydrates,
+        productProteins: this.productProteins, productFats: this.productFats, type: productType
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      try {
+        console.log(result);
+        console.log('IT wor');
+        this.productDescription = result.productDescription;
+        this.productName = result.productName;
+        this.productImage = result.productImage;
+        this.productKcal = result.productKcal;
+        this.productCarbohydrates = result.productCarbohydrates;
+        this.productProteins = result.productProteins;
+        this.productFats = result.productFats;
+        if (this.productName != null) {
+          this.productService.addProduct(this.productDescription, this.productName, this.productKcal,
+            this.productCarbohydrates, this.productProteins, this.productFats, productType).subscribe(() => {
+            this.productService.saveProductImage(this.productName, this.productImage).subscribe(() => {
+              this.userService.getUserById(this.userId).subscribe(user => {
+                this.getProductsByType(this.productType);
+              });
+            });
+            this.userService.getUserById(this.userId).subscribe(user => {
+              this.getProductsByType(this.productType);
+            });
+          });
+        }
+      } catch (e) {
+      }
+    });
+  }
+
+  removeSet(setId: number) {
+    this.setService.removeSet(setId, this.user.id).subscribe(() => {
+      this.userService.getUserById(this.userId).subscribe(user => {
+        this.user = user;
+        this.userSets = this.user.userSets;
+      });
+    });
+  }
+
+  deleteProductById(id: number) {
+    this.productService.deleteProduct(id).subscribe(() => {
+      this.getProductsByType(this.productType);
+    });
+  }
+
+  download(name: string, description: string, productsDetails: ProductDetails[]) {
+    const doc = new jsPDF();
+    doc.setFontType('bold');
+    doc.setFontSize(20);
+    doc.text(name, 90, 15);
+    doc.setFontSize(15);
+    doc.setFontType('normal');
+    doc.text(description, 10, 30);
+    // doc.table(10, 40, [{'lol1', 10}, {  lol2, 20}]);
+    let j = 50;
+    for (const productsDetail of productsDetails) {
+      doc.text(10, j, 'product name = ' + productsDetail.product.name + '   calories = ' +
+        productsDetail.product.kcal + '   grams = ' + productsDetail.grams);
+      j += 10;
+    }
+    doc.save(name + '.pdf');
+  }
+
+  getImage(image: File) {
+
   }
 }

@@ -50,8 +50,12 @@ import {NotifierModule, NotifierOptions} from 'angular-notifier';
 import {NgxCaptchaModule} from 'ngx-captcha';
 import {HttpModule} from '@angular/http';
 import {MatTableModule} from '@angular/material/table';
-import {ProductSetCreatingDialogComponent} from "./products/ProductSetCreatingDialog";
-import {MatDialogModule} from "@angular/material/dialog";
+import {ProductSetCreatingDialogComponent} from './products/product-set-creating-dialog';
+import {MatDialogModule} from '@angular/material/dialog';
+import {SetsService} from './services/sets-service';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {ProductCreatingDialogComponent} from "./products/product-creating-dialog";
+import {ImageService} from "./services/image-service";
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -105,9 +109,10 @@ const customNotifierOptions: NotifierOptions = {
     LogoutComponent,
     RegistrationComponent,
     CaptchaComponent,
-    ProductSetCreatingDialogComponent
+    ProductSetCreatingDialogComponent,
+    ProductCreatingDialogComponent
   ],
-  entryComponents: [ProductSetCreatingDialogComponent],
+  entryComponents: [ProductSetCreatingDialogComponent, ProductCreatingDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -154,8 +159,9 @@ const customNotifierOptions: NotifierOptions = {
     NotifierModule.withConfig(customNotifierOptions),
     MatTableModule,
     MatDialogModule,
+    MatButtonToggleModule,
   ],
-  providers: [ProductService, ApiService, UserService, RegistrationService],
+  providers: [ProductService, ApiService, UserService, RegistrationService, SetsService,ImageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

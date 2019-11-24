@@ -1,13 +1,20 @@
 <app-header></app-header>
 <body>
-<div class="row" style="margin: 0; opacity: 100%">
+<div class="row background" style="margin: 0; opacity: 100%">
   <div class="col-md-2">
-    <div style="height: 90px; background-color: #34ce57"></div>
+    <div style="height: 90px; "></div>
     <mat-action-list *ngFor="let productType of productTypes">
-      <button mat-list-item (click)="getProductsByType(productType)">{{productType}}</button>
+      <div class="row">
+        <button mat-flat-button (click)="getProductsByType(productType)"
+                style="width: 70%; margin-left: 10%; padding: 0; background-color: #138496">
+          {{productType}}
+        </button>
+        <a *ngIf="isAdmin()"><mat-icon (click)="openCreateProductDialog(productType)" class="float-right" style=" width: 35px; height: 100%; margin-left: 5px; border-radius: 4px;
+         font-size: 36px; color: white; background-color: #138496">add_circle</mat-icon></a>
+      </div>
     </mat-action-list>
   </div>
-  <div class="col-md-7" style="background-color: #abdde5">
+  <div class="col-md-7" style="padding: 0">
     <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" paginatorPosition="bottom" filterBy="name"
                 [sortField]="sortField" [sortOrder]="sortOrder" currentPageReportTemplate="gridItem" layout="grid"
                 [alwaysShowPaginator]="false">
@@ -40,8 +47,8 @@
             <mat-card-header>
               <mat-card-title>{{product.name}}</mat-card-title>
             </mat-card-header>
-            <img mat-card-image src="assets/img/{{product?.image}}" onError="this.src = 'assets/img/not-found.jpg'"
-                 alt="Photo of a Shiba Inu">
+            <img mat-card-image src="http://localhost:8080/products/image/{{product?.image}}" onError="this.src = 'assets/img/not-found.jpg'"
+                 alt="product" style="min-height: auto">
             <mat-card-content>
               <p>
                 The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
@@ -58,7 +65,15 @@
                   </div>
                 </div>
                 <div class="col-md-4" style="padding: 0; margin: auto;">
-                  <div *ngIf="isUser()">
+
+
+                  <div *ngIf="isAdmin()">
+                    <button (click)="deleteProductById(product.id)" mat-button style="background-color: red">
+                      Delete
+                    </button>
+                  </div>
+
+                  <div *ngIf="isCustomer()">
                     <button mat-button [matMenuTriggerFor]="appMenu2">
                       Add to Set
                     </button>
@@ -81,7 +96,7 @@
       </ng-template>
     </p-dataView>
   </div>
-  <div class="col-md-3" style="background-color: #34ce57">
+  <div class="col-md-3">
     <div *ngIf="isUser() && isCustomer()">
       <mat-card style="position: fixed; margin-top: 30px; width:23%">
         <mat-card-header>
@@ -108,11 +123,17 @@
             </mat-form-field>
             <mat-card>
               <div class="row" style="margin-left: 1%;">
-                <p matTooltip="kcal" class="text-primary setDetails">&nbsp;{{totalKcal(set.productsDetails)}}&nbsp;</p>
-                <p matTooltip="carbohydrates" class="text-success setDetails">{{totalCarbohydrates(set.productsDetails)}}&nbsp;</p>
-                <p matTooltip="proteins" class="text-danger setDetails">{{totalProteins(set.productsDetails)}}&nbsp;</p>
+                <p matTooltip="kcal" class="text-primary setDetails">
+                  &nbsp;{{totalKcal(set.productsDetails)}}&nbsp;</p>
+                <p matTooltip="carbohydrates"
+                   class="text-success setDetails">{{totalCarbohydrates(set.productsDetails)}}&nbsp;</p>
+                <p matTooltip="proteins"
+                   class="text-danger setDetails">{{totalProteins(set.productsDetails)}}&nbsp;</p>
                 <p matTooltip="fats" class="text-warning setDetails">{{totalFats(set.productsDetails)}}</p>
                 <p matTooltip="grams" class="setDetails">{{totalGrams(set.productsDetails)}}</p>
+                <mat-icon (click)="removeSet(set.id)">delete</mat-icon>
+                <mat-icon (click)="download(set.name, set.description, set.productsDetails)">picture_as_pdf</mat-icon>
+
               </div>
             </mat-card>
           </mat-expansion-panel>
@@ -128,6 +149,5 @@
     </div>
   </div>
 </div>
-<app-footer></app-footer>
-</body>
 
+</body>

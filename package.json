@@ -25,6 +25,7 @@
     "@ngrx/store": "^8.5.1",
     "@types/chart.js": "^2.8.11",
     "angular-bootstrap-md": "^8.5.0",
+    "angular-notifier": "latest",
     "animate.css": "^3.7.2",
     "animations": "0.0.0",
     "api": "0.0.1",
@@ -33,6 +34,8 @@
     "chart.js": "^2.5.0",
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
+    "jspdf": "^1.5.3",
+    "jspdf-autotable": "^3.2.11",
     "material-design-icons": "^3.0.1",
     "mdbootstrap": "^4.8.11",
     "ng-notifier": "^1.0.0",
@@ -46,8 +49,7 @@
     "tether": "^1.4.7",
     "tooltip.js": "^1.3.3",
     "tslib": "^1.10.0",
-    "zone.js": "~0.9.1",
-    "angular-notifier": "latest"
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.19",

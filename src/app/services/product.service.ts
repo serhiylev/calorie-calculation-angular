@@ -1,13 +1,13 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {ProductType} from '../models/product-type';
 
-export interface Product {
+export class Product {
   id: number;
   name: string;
+  description: string;
   type: string;
-  image: string;
   kcal: number;
   fats: number;
   proteins: number;
@@ -38,4 +38,28 @@ export class ProductService {
     return this.httpClient.put('http://localhost:8080/products/addToSet/' + setId + '/' + productId + '/' + grams, {headers});
   }
 
+  deleteProduct(id: number) {
+    return this.httpClient.delete('http://localhost:8080/products/delete/' + id, {headers});
+  }
+
+  addProduct(productDescription: string, productName: string,
+             productKcal: number, productCarbohydrates: number, productProteins: number,
+             productFats: number, productType: string) {
+    let product: Product = new Product();
+    product.name = productName;
+    product.description = productDescription;
+    product.fats = productFats;
+    product.proteins = productProteins;
+    product.carbohydrates = productCarbohydrates;
+    product.type = productType.toUpperCase();
+    product.kcal = productKcal;
+    return this.httpClient.post<Product>('http://localhost:8080/' + 'products/add',
+      JSON.stringify(product), {headers});
+  }
+
+  saveProductImage(productName: string, imageFile: File) {
+    const formData = new FormData();
+    formData.append('imageFile', imageFile);
+    return this.httpClient.post('http://localhost:8080/' + 'products/addImage/' + productName, formData);
+  }
 }

@@ -9,11 +9,19 @@ const headers = new HttpHeaders(
   });
 
 @Injectable()
-export class UserService {
+export class SetsService {
 
   constructor(private httpClient: HttpClient) {}
 
   getUserById(id: number): Observable<User> {
     return this.httpClient.get<User>('http://localhost:8080/' + 'customer?id=' + id, {headers});
+  }
+
+  addSet(name: string, description: string, userId: number) {
+    return this.httpClient.put('http://localhost:8080/sets/addSet/' + name + '/' + description + '/' + userId, {headers});
+  }
+
+  removeSet(setId: number, userId: number) {
+    return this.httpClient.delete('http://localhost:8080/sets/deleteSet/' + userId + '/' + setId, {headers});
   }
 }

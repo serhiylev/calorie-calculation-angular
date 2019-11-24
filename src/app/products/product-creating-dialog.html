@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Create Product to menu   {{data.type}}</h1>
+<div mat-dialog-content style="width: 100%">
+  <div class="col-md-12">
+    <div class="col-md-5" style=" width: 100%">
+      <img [src]="url" onError="this.src = 'assets/img/not-found.jpg'" width="100%">
+      <div class="row">
+        <label class="custom-file-upload col align-self-center" style="width: 35%; margin-left: 32%;">
+          <input type="file" class="btn btn-outline-info" accept="image/"
+                 (change)="onSelectFile($event)"
+                 style="height:100%;" [hidden]="true"/>
+          <i class="fa fa-cloud-upload" style="margin-left: 10px;"></i> <a mat-button> uploadImage</a>
+        </label>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field class="example-full-width" style="width: 90%">
+        <textarea matInput placeholder="Description" [(ngModel)]="data.productDescription" style="min-height: 60px"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Name" [(ngModel)]="data.productName">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="productCarbohydrates" [(ngModel)]="data.productCarbohydrates">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="productFats" [(ngModel)]="data.productFats">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="productKcal" [(ngModel)]="data.productKcal">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="productProteins" [(ngModel)]="data.productProteins">
+      </mat-form-field>
+    </div>
+
+
+  </div>
+</div>
+<div mat-dialog-actions class="float-right">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>
