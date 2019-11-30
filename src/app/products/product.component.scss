@@ -11,3 +11,10 @@
   background-image: url(../../assets/img/repeated.jpg);
   background-repeat: repeat;
 }
+
+.hero--overlay {
+  background-color: rgba(0, 0, 0, 0.68);
+  width: 100%;
+  position: absolute!important;
+  height: 100%;
+}

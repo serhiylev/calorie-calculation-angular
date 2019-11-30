@@ -1,153 +1,158 @@
 <app-header></app-header>
 <body>
 <div class="row background" style="margin: 0; opacity: 100%">
-  <div class="col-md-2">
-    <div style="height: 90px; "></div>
-    <mat-action-list *ngFor="let productType of productTypes">
-      <div class="row">
-        <button mat-flat-button (click)="getProductsByType(productType)"
-                style="width: 70%; margin-left: 10%; padding: 0; background-color: #138496">
-          {{productType}}
-        </button>
-        <a *ngIf="isAdmin()"><mat-icon (click)="openCreateProductDialog(productType)" class="float-right" style=" width: 35px; height: 100%; margin-left: 5px; border-radius: 4px;
-         font-size: 36px; color: white; background-color: #138496">add_circle</mat-icon></a>
-      </div>
-    </mat-action-list>
-  </div>
-  <div class="col-md-7" style="padding: 0">
-    <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" paginatorPosition="bottom" filterBy="name"
-                [sortField]="sortField" [sortOrder]="sortOrder" currentPageReportTemplate="gridItem" layout="grid"
-                [alwaysShowPaginator]="false">
-      <p-header>
-        <div class="ui-helper-clearfix" style="max-height: 50px">
-          <div class="ui-g">
-            <div class="ui-g-12 ui-md-4">
-              <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By"
-                          (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
-            </div>
-            <div class="ui-g-6 ui-md-4 filter-container">
+    <div class="col-md-2">
+      <div style="height: 90px; "></div>
+      <mat-action-list *ngFor="let productType of productTypes">
+        <div class="row">
+          <button mat-flat-button (click)="getProductsByType(productType)"
+                  style="width: 70%; margin-left: 10%; padding: 10px; background-color: #138496; font-size: 20px;
+    color: #ffffffe0; border-radius: 8px;">
+            {{productType}}
+          </button>
+          <a *ngIf="isAdmin()">
+            <mat-icon (click)="openCreateProductDialog(productType)" class="float-right" style=" width: 35px; height: 100%; margin-left: 5px; border-radius: 4px;
+         font-size: 45px; color: black; ">add_circle
+            </mat-icon>
+          </a>
+        </div>
+      </mat-action-list>
+    </div>
+    <div class="col-md-7" style="padding: 0">
+      <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" paginatorPosition="bottom" filterBy="name"
+                  [sortField]="sortField" [sortOrder]="sortOrder" currentPageReportTemplate="gridItem" layout="grid"
+                  [alwaysShowPaginator]="false">
+        <p-header>
+          <div class="ui-helper-clearfix" style="max-height: 50px">
+            <div class="ui-g">
+              <div class="ui-g-12 ui-md-4">
+                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Сортувати за"
+                            (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+              </div>
+              <div class="ui-g-6 ui-md-4 filter-container">
 
-            </div>
-            <div class="ui-g-6 ui-md-4" style="text-align:right">
-              <div style="position:relative">
-                <form class="form-inline">
-                  <div class="md-form my-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search by name"
-                           (keyup)="dv.filter($event.target.value)">
-                  </div>
-                </form>
+              </div>
+              <div class="ui-g-6 ui-md-4" style="text-align:right">
+                <div style="position:relative">
+                  <form class="form-inline">
+                    <div class="md-form my-0">
+                      <input class="form-control mr-sm-2" type="text" placeholder="Пошук за іменем"
+                             (keyup)="dv.filter($event.target.value)">
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </p-header>
-      <ng-template let-product pTemplate="gridItem">
-        <div style="padding:.5em" class="ui-g-12 ui-md-4">
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>{{product.name}}</mat-card-title>
-            </mat-card-header>
-            <img mat-card-image src="http://localhost:8080/products/image/{{product?.image}}" onError="this.src = 'assets/img/not-found.jpg'"
-                 alt="product" style="min-height: auto">
-            <mat-card-content>
-              <p>
-                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-              </p>
-            </mat-card-content>
-            <mat-card-actions>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="row" style="width: 75%; margin-left: 15%; margin-top: 15%; padding: 0">
-                    <p matTooltip="kcal" class="text-primary">&nbsp;{{product.kcal}}&nbsp;</p>
-                    <p matTooltip="carbohydrates" class="text-success">{{product.carbohydrates}}&nbsp;</p>
-                    <p matTooltip="proteins" class="text-danger">{{product.proteins}}&nbsp;</p>
-                    <p matTooltip="fats" class="text-warning">{{product.fats}}&nbsp;</p>
-                  </div>
-                </div>
-                <div class="col-md-4" style="padding: 0; margin: auto;">
-
-
-                  <div *ngIf="isAdmin()">
-                    <button (click)="deleteProductById(product.id)" mat-button style="background-color: red">
-                      Delete
-                    </button>
-                  </div>
-
-                  <div *ngIf="isCustomer()">
-                    <button mat-button [matMenuTriggerFor]="appMenu2">
-                      Add to Set
-                    </button>
-                    <mat-menu #appMenu2="matMenu">
-                      <button mat-menu-item (click)="addProductToSet(product.id, set.id)"
-                              *ngFor="let set of userSets">{{set.name}}</button>
-                    </mat-menu>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <mat-form-field style="width: 40px">
-                    <input (change)="getGrams($event,product.id)" matInput type="number" placeholder="grams"
-                           value="100">
-                  </mat-form-field>
-                </div>
-              </div>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-      </ng-template>
-    </p-dataView>
-  </div>
-  <div class="col-md-3">
-    <div *ngIf="isUser() && isCustomer()">
-      <mat-card style="position: fixed; margin-top: 30px; width:23%">
-        <mat-card-header>
-          <mat-card-title>Product Sets</mat-card-title>
-        </mat-card-header>
-        <mat-card-content *ngFor="let set of userSets">
-          <mat-expansion-panel [expanded]="step === set.id" (opened)="setStep(set.id)">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{set.name}}
-              </mat-panel-title>
-              <mat-panel-description>
-                {{set.description}}
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <mat-form-field class="example-chip-list" style="width: 100%">
-              <mat-chip-list aria-label="selection lol">
-                <mat-chip *ngFor="let productDetail of set.productsDetails" [selectable]="selectable"
-                          [removable]="removable" (removed)="remove(productDetail.id)">
-                  {{productDetail.product.name}}({{productDetail.grams}}g)
-                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                </mat-chip>
-              </mat-chip-list>
-            </mat-form-field>
+        </p-header>
+        <ng-template let-product pTemplate="gridItem">
+          <div style="padding:.5em" class="ui-g-12 ui-md-4">
             <mat-card>
-              <div class="row" style="margin-left: 1%;">
-                <p matTooltip="kcal" class="text-primary setDetails">
-                  &nbsp;{{totalKcal(set.productsDetails)}}&nbsp;</p>
-                <p matTooltip="carbohydrates"
-                   class="text-success setDetails">{{totalCarbohydrates(set.productsDetails)}}&nbsp;</p>
-                <p matTooltip="proteins"
-                   class="text-danger setDetails">{{totalProteins(set.productsDetails)}}&nbsp;</p>
-                <p matTooltip="fats" class="text-warning setDetails">{{totalFats(set.productsDetails)}}</p>
-                <p matTooltip="grams" class="setDetails">{{totalGrams(set.productsDetails)}}</p>
-                <mat-icon (click)="removeSet(set.id)">delete</mat-icon>
-                <mat-icon (click)="download(set.name, set.description, set.productsDetails)">picture_as_pdf</mat-icon>
+              <mat-card-header>
+                <mat-card-title>{{product.name}}</mat-card-title>
+              </mat-card-header>
+              <img mat-card-image src="http://localhost:8080/products/image/{{product?.image}}"
+                   onError="this.src = 'assets/img/not-found.jpg'"
+                   alt="product" style="min-height: 166px;max-height: 166px;">
+              <mat-card-content style="min-height: 25%;max-height: 25%">
+                <p>
+                  {{product.description}}
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="row" style="width: 100%; margin-left: 15%; margin-top: 15%; padding: 0">
+                      <p matTooltip="калорії" class="text-primary">&nbsp;{{product.kcal}}&nbsp;</p>
+                      <p matTooltip="вугливоди" class="text-success">{{product.carbohydrates}}&nbsp;</p>
+                      <p matTooltip="білки" class="text-danger">{{product.proteins}}&nbsp;</p>
+                      <p matTooltip="жири" class="text-warning">{{product.fats}}&nbsp;</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4" style="padding: 0; margin: auto;">
 
-              </div>
+
+                    <div *ngIf="isAdmin()">
+                      <button (click)="deleteProductById(product.id)" mat-button style="background-color: red">
+                        Delete
+                      </button>
+                    </div>
+
+                    <div *ngIf="isCustomer()">
+                      <button mat-button [matMenuTriggerFor]="appMenu2">
+                        Add to Set
+                      </button>
+                      <mat-menu #appMenu2="matMenu">
+                        <button mat-menu-item (click)="addProductToSet(product.id, set.id)"
+                                *ngFor="let set of userSets">{{set.name}}</button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field style="width: 40px">
+                      <input (change)="getGrams($event,product.id)" matInput type="number" placeholder="grams"
+                             value="100">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-card-actions>
             </mat-card>
-          </mat-expansion-panel>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-raised-button (click)="openCreateSetDialog()">Create New</button>
-        </mat-card-actions>
-      </mat-card>
+          </div>
+        </ng-template>
+      </p-dataView>
     </div>
-    <div *ngIf="!isUser()">
-      <h2>My Set</h2>
-      To create set you need firstly to LogIn
+    <div class="col-md-3">
+      <div *ngIf="isUser() && isCustomer()">
+        <mat-card style="position: fixed; margin-top: 30px; width:23%">
+          <mat-card-header>
+            <mat-card-title>Product Sets</mat-card-title>
+          </mat-card-header>
+          <mat-card-content *ngFor="let set of userSets">
+            <mat-expansion-panel [expanded]="step === set.id" (opened)="setStep(set.id)">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{set.name}}
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{set.description}}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-form-field class="example-chip-list" style="width: 100%">
+                <mat-chip-list aria-label="selection lol">
+                  <mat-chip *ngFor="let productDetail of set.productsDetails" [selectable]="selectable"
+                            [removable]="removable" (removed)="remove(productDetail.id)">
+                    {{productDetail.product.name}}({{productDetail.grams}}g)
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                </mat-chip-list>
+              </mat-form-field>
+              <mat-card>
+                <div class="row" style="margin-left: 1%;">
+                  <p matTooltip="kcal" class="text-primary setDetails">
+                    &nbsp;{{totalKcal(set.productsDetails)}}&nbsp;</p>
+                  <p matTooltip="carbohydrates"
+                     class="text-success setDetails">{{totalCarbohydrates(set.productsDetails)}}&nbsp;</p>
+                  <p matTooltip="proteins"
+                     class="text-danger setDetails">{{totalProteins(set.productsDetails)}}&nbsp;</p>
+                  <p matTooltip="fats" class="text-warning setDetails">{{totalFats(set.productsDetails)}}</p>
+                  <p matTooltip="grams" class="setDetails">{{totalGrams(set.productsDetails)}}</p>
+                  <mat-icon (click)="removeSet(set.id)">delete</mat-icon>
+                  <mat-icon (click)="download(set.name, set.description, set.productsDetails)">picture_as_pdf</mat-icon>
+
+                </div>
+              </mat-card>
+            </mat-expansion-panel>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button (click)="openCreateSetDialog()">Create New</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div *ngIf="!isUser()" style="background-color: white;padding: 25px;">
+        <h2>My Set</h2>
+        To create set you need firstly to LogIn
+      </div>
     </div>
-  </div>
 </div>
 
 </body>

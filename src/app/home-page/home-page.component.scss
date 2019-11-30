@@ -1,15 +1,26 @@
-//.dish-menu {
-//  border: white;
-//}
 .bg {
   /* The image used */
-  background-image: url(../../assets/img/shutterstock_530432932.jpg);
+  background-image: url(../../assets/img/healthy-hero.jpg);
   /* Full height */
   height: 100%;
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.hero--overlay {
+  background-color: rgba(0, 0, 0, 0.68);
+  width: 100%;
+  position: absolute!important;
+  height: 100%;
+}
+
+.hero--overlay--two {
+  margin-top: 8%;
+  background-color: rgba(0, 0, 0, 0.52);
+  padding: 35px;
+  border-radius: 8px
 }
 
 .bg-test {

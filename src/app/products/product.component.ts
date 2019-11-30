@@ -15,6 +15,12 @@ import {SetsService} from '../services/sets-service';
 import {ProductCreatingDialogComponent} from './product-creating-dialog';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+import {iterator} from "rxjs/internal-compatibility";
+import {formatI18nPlaceholderName} from "@angular/compiler/src/render3/view/i18n/util";
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
 export const stringToEnumValue = <ET, T>(enumObj: ET, str: string): T =>
@@ -63,16 +69,17 @@ export class ProductComponent implements OnInit {
   setName: string;
 
   ngOnInit() {
-    this.getProductsByType(ProductType.SALAD);
+    this.getProductsByType(ProductType.BERRIES);
     this.productTypes = [
-      ProductType.SALAD.toString(), ProductType.DESSERT.toString(),
+      ProductType.BERRIES.toString(), ProductType.DESSERT.toString(),
       ProductType.FIRST_DISH.toString(), ProductType.SECOND_DISH.toString()
     ];
     this.sortOptions = [
-      {label: 'Name', value: 'name'},
-      {label: 'Type', value: 'type'},
-      {label: 'Brand', value: 'brand'},
-      {label: 'None', value: false}
+      {label: 'Ім\'я', value: 'name'},
+      {label: 'Калорії', value: 'kcal'},
+      {label: 'Білки', value: 'proteins'},
+      {label: 'Вугливоди', value: 'carbohydrates'},
+      {label: 'Жири', value: 'fats'}
     ];
     if (this.isUser()) {
       this.userService.getUserById(this.userId).subscribe(user => {
@@ -243,8 +250,6 @@ export class ProductComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       try {
-        console.log(result);
-        console.log('IT wor');
         this.productDescription = result.productDescription;
         this.productName = result.productName;
         this.productImage = result.productImage;
@@ -286,21 +291,65 @@ export class ProductComponent implements OnInit {
   }
 
   download(name: string, description: string, productsDetails: ProductDetails[]) {
-    const doc = new jsPDF();
-    doc.setFontType('bold');
-    doc.setFontSize(20);
-    doc.text(name, 90, 15);
-    doc.setFontSize(15);
-    doc.setFontType('normal');
-    doc.text(description, 10, 30);
-    // doc.table(10, 40, [{'lol1', 10}, {  lol2, 20}]);
-    let j = 50;
-    for (const productsDetail of productsDetails) {
-      doc.text(10, j, 'product name = ' + productsDetail.product.name + '   calories = ' +
-        productsDetail.product.kcal + '   grams = ' + productsDetail.grams);
-      j += 10;
-    }
-    doc.save(name + '.pdf');
+    let productsRows = [];
+
+    productsDetails.forEach(function(value, key) {
+      productsRows.push({Name: value.product.name, Grams: value.grams, Kcal: value.product.kcal, Carbohydrates:value.product.carbohydrates,Proteins:value.product.proteins,Fats:value.product.fats});
+    });
+
+    var items = productsRows.map(function(item) {
+      console.log(item.Name, item.Grams, item.Kcal, item.Carbohydrates,item.Proteins,item.Fats);
+      return [item.Name, item.Grams, item.Kcal,item.Carbohydrates,item.Proteins,item.Fats];
+    });
+
+    var docDefinition =
+      {
+        pageOrientation: 'landscape',
+
+        content:
+          [
+            { text: name, style: 'firstLine'},
+            {
+              style: 'songRow',
+              table:
+                {
+                  body:
+                    [
+                      [
+                        { text: '' },
+                        { text: '---Грами---' },
+                        { text: '---Калорії---' },
+                        { text: '---Вугливоди---' },
+                        { text: '---Білки---' },
+                        { text: '---Жири---' },
+                      ]
+                    ].concat(items)
+                }
+            }
+          ],
+
+        styles: {
+          firstLine: {
+            fontSize: 32,
+            bold: true,
+            alignment: 'center'
+          },
+          secondLine: {
+            fontSize: 15,
+            bold: true,
+            alignment: 'center'
+          },
+          songRow: {
+            fontSize: 18,
+            bold: true,
+            alignment: 'center',
+          },
+        }
+
+
+      };//End docDefinition
+
+    pdfMake.createPdf(docDefinition).open();
   }
 
   getImage(image: File) {
